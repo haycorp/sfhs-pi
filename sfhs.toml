@@ -1,0 +1,39 @@
+[agent]
+name = "pi"
+image = "ghcr.io/hcohe/pi-agent"
+cmd = "pi"
+args = ["--approve"]
+
+[update]
+cmds = [
+  "pi update",
+  "jq --arg v $(pi -v) '.lastChangelogVersion = $v' /root/.pi/agent/settings.json > /tmp/settings.json",
+  "mv /tmp/settings.json /root/.pi/agent/settings.json",
+  "echo $(pi -v)",
+]
+
+[[update.volumes]]
+local = "{HOME}/.pi/agent"
+sandbox = "/root/.pi/agent"
+readonly = false
+
+[[volumes]]
+local = "{GIT_CWD}"
+sandbox = "/workspace"
+
+[[volumes]]
+local = "{HOME}/.pi/agent"
+sandbox = "/root/.pi/agent"
+copy = true
+
+[[vars]]
+name = "PI_CODING_AGENT_DIR"
+value = "/root/.pi/agent"
+
+[[vars]]
+name = "PI_CODING_AGENT_SESSION_DIR"
+value = "{ENV:PI_CODING_AGENT_SESSION_DIR}"
+
+[[update.vars]]
+name = "PI_OFFLINE"
+value = "0"
