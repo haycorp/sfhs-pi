@@ -1,6 +1,6 @@
 [agent]
 name = "pi"
-image = "ghcr.io/haycorp/pi-agent"
+image = "ghcr.io/haycorp/sfhs-pi"
 cmd = "pi"
 args = ["--approve"]
 
